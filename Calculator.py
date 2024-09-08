@@ -9,9 +9,18 @@ root.title("Calculator")
 e = Entry(root, width=50, borderwidth=2, font=("Segoe Print", 45), justify="right")
 e.grid(row=0, column=0, columnspan=4, sticky="nsew", padx=20, pady=20)
 
+#initially no operation
+math=None
+
+#insert at cursor
+def click(num):
+    i = e.index(INSERT)  
+    e.insert(i, num)
+    
 #click 
-def click(number):
-    current = e.get()  
+def insert(number):
+    current = e.get()
+    click(str(number))
     if number == "." and "." in current:  #for decimal
             return
     e.insert(END, str(number)) 
@@ -77,24 +86,27 @@ def neg():
     if fn:  
         e.delete(0, END)
         e.insert(0, str(float(fn) * -1))
-        
+    
 #operation
 def equal():
     sn=e.get()
     e.delete(0, END)
-    if math=="add":
-        e.insert(0,f+float(sn))
-    if math=="sub":
-        e.insert(0,f-float(sn))
-    if math=="multiply":
-            e.insert(0,f*float(sn))
-    if math=="divide":
-        if float(sn)==0.0:
-            messagebox.showinfo("ERROR","CANNOT DIVIDE BY ZERO")
-        else:
-            e.insert(0,f/float(sn))
-    if math=="modulo":
-        e.insert(0,f%float(sn))
+    if math:
+        if math=="add":
+            e.insert(0,f+float(sn))
+        if math=="sub":
+            e.insert(0,f-float(sn))
+        if math=="multiply":
+                e.insert(0,f*float(sn))
+        if math=="divide":
+            if float(sn)==0.0:
+                messagebox.showinfo("ERROR","CANNOT DIVIDE BY ZERO")
+            else:
+                e.insert(0,f/float(sn))
+        if math=="modulo":
+            e.insert(0,f%float(sn))
+    else:
+        e.insert(0,str(float(sn)))
 
 #numbers
 b0 = Button(root, text="0", height=2,width=6 , command= lambda: click(0), font=("Segoe Print", 15))
